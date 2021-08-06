@@ -2,6 +2,7 @@ import requests as req
 import matplotlib.pyplot as plt
 import csv
 import os
+import datetime
 
 from itertools import count
 from matplotlib.animation import FuncAnimation
@@ -22,7 +23,8 @@ index = count()
 plt.style.use('dark_background')
 
 def update(i):
-    x = next(index)
+    x = next(datetime.datetime.now() + datetime.timedelta(hours=i) for i in range(24))
+
     x_vals.append(x)
 
     response = req.get(URL)
@@ -53,8 +55,8 @@ def update(i):
 def save_data():
     with open(SAVE_FILE, 'w') as f:
         w = csv.writer(f, delimiter=CSV_DELIM)
-        for x in x_vals:
-            w.writerow([x, expected_games_ls[x], current_games_ls[x]])
+        for i in range(len(x_vals)):
+            w.writerow([x_vals[i], expected_games_ls[i], current_games_ls[i]])
 
 def load_data():
     if os.path.exists(SAVE_FILE):
@@ -63,7 +65,7 @@ def load_data():
             data = list(r)
             
             for line in data:
-                x = next(index)
+                x = line[0]
                 x_vals.append(x)
 
                 expected_games_ls.append(int(line[1]))
@@ -80,6 +82,7 @@ def render_graph():
     plt.xlabel(f"Time ({UPDATE_RATE}s) interval)")
     plt.ylabel("Number of Games")
     plt.legend()
+    plt.gcf().autofmt_xdate()
 
 
 load_data()
