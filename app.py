@@ -66,7 +66,7 @@ def load_data():
             
             for line in data:
                 x = line[0]
-                x_vals.append(x)
+                x_vals.append(str(x))
 
                 expected_games_ls.append(int(line[1]))
                 current_games_ls.append(int(line[2]))
