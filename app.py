@@ -7,6 +7,7 @@ import datetime
 from itertools import count
 from matplotlib.animation import FuncAnimation
 from bs4 import BeautifulSoup
+from datetime import datetime as dt
 
 URL = "https://lichess.org/"
 UPDATE_RATE = 30 # seconds
@@ -23,7 +24,7 @@ index = count()
 plt.style.use('dark_background')
 
 def update(i):
-    x = next(datetime.datetime.now() + datetime.timedelta(hours=i) for i in range(24))
+    x = dt.now()
 
     x_vals.append(x)
 
@@ -65,8 +66,9 @@ def load_data():
             data = list(r)
             
             for line in data:
-                x = line[0]
-                x_vals.append(str(x))
+                print(line)
+                x = str(line[0])
+                x_vals.append(x)
 
                 expected_games_ls.append(int(line[1]))
                 current_games_ls.append(int(line[2]))
